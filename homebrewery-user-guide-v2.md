@@ -1046,3 +1046,131 @@ The **gear** (often on the preview side). This is **how you look at** the brew, 
 
 ---
 
+
+## 8. Export to PDF
+
+Homebrewery prints through the **browser**. Prefer **Chrome** (Firefox works, but PDF quirks show up there more often).
+
+1. Check the preview: nothing clipped, page breaks where chapters should start.
+2. Click **GET PDF**, or press **Ctrl+P** / **Cmd+P** (this opens print, not the editor chrome).
+3. Save as PDF with **Letter** paper (unless you chose A4/A5/A3), **None** margins, **Background graphics** on, and **100%** scale — do not “fit to page.”
+4. Flip through every page in a PDF reader. Confirm wide tables, monster frames, and page numbers are intact.
+
+For playtest feedback without freezing the layout, use the live **Share** link instead of a PDF.
+
+---
+
+## 9. Quick troubleshooting
+
+
+| What you see                                  | Likely cause                                                  | What to try                                                              |
+| --------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Text hanging off the page                     | Overflow into a third CSS column, or a missing `\page`        | Add a page break; shorten the column; move a tall block                  |
+| `\page` does nothing                          | It is not alone at the start of a line                        | Put it on its own line                                                   |
+| Right column empty                            | No overflow and no `\column`                                  | Insert `\column` where the right-hand section should start               |
+| Stat block looks like a note                  | Missing `{{monster,frame` (V3) or snippet not inserted        | Re-insert the PHB monster snippet                                        |
+| Table crushed                                 | Table is in a single column                                   | Wrap in `{{wide ... }}`                                                  |
+| PDF missing backgrounds                       | Print dialog dropped background graphics                      | Turn **Background graphics** on, margins none, letter, 100%              |
+| PDF differs from HTML around `wide`           | Rare browser column bug, or `\column` directly above `{{wide` | Prefer Chrome; avoid a hard column break immediately before a wide block |
+| Contents page numbers disagree with the folio | ToC generated before skip/restart, or not regenerated         | Fix numbering snippets, then run **Table of Contents** again             |
+
+
+You are not expected to get the first page perfect. Adjust `\page` and `\column` the way you would nudge frames in a desktop publisher.
+
+---
+
+## 10. Where to go next
+
+- Editor: [https://homebrewery.naturalcrit.com](https://homebrewery.naturalcrit.com)
+- Changelog (new snippets and print behavior): project [changelog](https://github.com/naturalcrit/homebrewery/blob/master/changelog.md)
+- Help from other authors: [r/homebrewery](https://www.reddit.com/r/homebrewery/)
+- Bugs and requests: [naturalcrit/homebrewery issues](https://github.com/naturalcrit/homebrewery/issues)
+
+---
+
+### A small working starter
+
+Paste this into a new V3 brew to practise layout, a table, a note, and a stat block, then export once so the print settings are familiar before a deadline.
+
+```markdown
+{{skipCounting}}
+
+# Saltmarsh Gazetteer
+
+A one-evening heist on the docks.
+
+\page
+
+{{resetCounting}}
+{{pageNumber,auto}}
+{{footnote THE HARBOR}}
+
+## The Docks at Night
+
+Welcome to a preview of the watch, the vault, and the thing under the pier.
+
+- **Theme:** smugglers, bells, and bad weather
+- **Tone:** tense, but the locals still gossip
+
+\column
+
+### Using this page
+
+Keep sessions short. Let the party pick **one** lead, then cut to the pier.
+
+::::
+
+See also [the vault](#p3).
+
+{{note
+##### Harbor Watch
+A bribe under 5 gp buys a shrug. A talking gull buys a full report.
+}}
+
+{{wide
+##### Harbor leads
+
+| d4 | Lead |
+|:--:|:-----|
+| 1 | A clerk “lost” last night’s ledger |
+| 2 | The mastiff will not go near the vault |
+| 3 | Tide marks on the counting-house floor |
+| 4 | Someone paid the watch in foreign coin |
+}}
+
+\page
+
+{{pageNumber,auto}}
+{{footnote THE HARBOR}}
+
+## The Vault Door
+
+Two iron bars and a sleeping mastiff.
+
+{{monster,frame
+## Harbor Mastiff
+*Medium beast, unaligned*
+___
+**Armor Class** :: 12
+**Hit Points** :: 11 (2d8 + 2)
+**Speed** :: 40 ft.
+___
+|STR|DEX|CON|INT|WIS|CHA|
+|:---:|:---:|:---:|:---:|:---:|:---:|
+|13 (+1)|14 (+2)|12 (+1)|3 (−4)|12 (+1)|7 (−2)|
+___
+**Skills** :: Perception +3
+**Senses** :: passive Perception 13
+**Languages** :: —
+**Challenge** :: 1/8 (25 XP) {{bonus **Proficiency Bonus** +2}}
+___
+***Keen Hearing and Smell.*** The mastiff has advantage on Wisdom (Perception) checks that rely on hearing or smell.
+
+### Actions
+***Bite.*** *Melee Weapon Attack:* +3 to hit, reach 5 ft., one target. *Hit:* 4 (1d6 + 1) piercing damage.
+}}
+
+<!-- Balance pass: mastiff should be a warning, not a TPK. -->
+```
+
+That loop is page flow, numbering, a footer, a column break, spacing, a note, a wide table, a framed stat block, an in-brew page link, and a comment. Use **Chapter 5** for more PHB blocks and **Chapter 6** for images, tables, fonts, and licenses.
